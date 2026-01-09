@@ -1,0 +1,17 @@
+# docker-compose.yml
+version: '3.4' # 可以使用较新的 Compose 版本定义
+services:
+  weaviate:
+    image: semitechnologies/weaviate:1.35.2
+    ports:
+      - "8080:8080" # HTTP
+      - "50051:50051" # gRPC
+    volumes:
+      - ./weaviate_data:/var/lib/weaviate # 数据持久化
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true' # 简化 PoC 认证
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none' # 我们在客户端进行嵌入
+      ENABLE_MODULES: '' # 根据需要启用模块，初期可为空
+      CLUSTER_HOSTNAME: 'node1'
